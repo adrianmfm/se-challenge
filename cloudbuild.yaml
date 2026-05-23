@@ -4,9 +4,9 @@ steps:
     args:
       - build
       - -t
-      - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
       - -t
-      - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
       - .
 
   # 2. Run tests inside the container (uses SQLite, no DB needed)
@@ -16,7 +16,7 @@ steps:
       - --rm
       - --entrypoint
       - pytest
-      - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
       - tests/
       - --tb=short
 
@@ -24,12 +24,12 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
       - push
-      - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
 
   - name: "gcr.io/cloud-builders/docker"
     args:
       - push
-      - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
+      - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
 
   # 4. Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -38,12 +38,12 @@ steps:
       - run
       - deploy
       - user-management-api
-      - --image=us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
-      - --region=us-central1
+      - --image=southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
+      - --region=southamerica-east1
       - --platform=managed
       - --allow-unauthenticated
       - --set-env-vars=DATABASE_URL=$$DATABASE_URL
-      - --add-cloudsql-instances=$PROJECT_ID:us-central1:se-challenge-db
+      - --add-cloudsql-instances=$PROJECT_ID:southamerica-east1:se-challenge-db
     secretEnv:
       - DATABASE_URL
 
@@ -53,8 +53,8 @@ availableSecrets:
       env: DATABASE_URL
 
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
-  - us-central1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
+  - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
+  - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
 
 options:
   logging: CLOUD_LOGGING_ONLY
