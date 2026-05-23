@@ -3,9 +3,13 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.core.config import settings
 
 
+class Base(DeclarativeBase):
+    pass
+
+
 engine = create_engine(
     settings.DATABASE_URL,
-    pool_pre_ping=True,   # reconnect if connection dropped
+    pool_pre_ping=True,
     pool_size=10,
     max_overflow=20,
 )
@@ -13,12 +17,7 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-class Base(DeclarativeBase):
-    pass
-
-
 def get_db():
-    """FastAPI dependency that provides a DB session per request."""
     db = SessionLocal()
     try:
         yield db

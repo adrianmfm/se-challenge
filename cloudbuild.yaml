@@ -31,7 +31,7 @@ steps:
       - push
       - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:latest
 
-  # 4. Deploy image to Cloud Run
+  # 4. Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -42,19 +42,9 @@ steps:
       - --region=southamerica-east1
       - --platform=managed
       - --allow-unauthenticated
+      - --set-secrets=DATABASE_URL=DATABASE_URL:latest
       - --add-cloudsql-instances=$PROJECT_ID:us-central1:se-challenge-db
       - --timeout=120
-
-  # 5. Attach DATABASE_URL secret to the service
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    entrypoint: gcloud
-    args:
-      - run
-      - services
-      - update
-      - user-management-api
-      - --region=southamerica-east1
-      - --update-secrets=DATABASE_URL=DATABASE_URL:latest
 
 images:
   - southamerica-east1-docker.pkg.dev/$PROJECT_ID/user-management-api/api:$COMMIT_SHA
