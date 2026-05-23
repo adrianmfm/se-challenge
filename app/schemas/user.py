@@ -12,6 +12,21 @@ class UserCreate(BaseModel):
     role: UserRole = UserRole.user
     active: bool = True
 
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "username": "juan_perez",
+                    "email": "juan.perez@example.com",
+                    "first_name": "Juan",
+                    "last_name": "Perez",
+                    "role": "user",
+                    "active": True,
+                }
+            ]
+        }
+    }
+
     @field_validator("username")
     @classmethod
     def username_lowercase(cls, v: str) -> str:
@@ -25,6 +40,18 @@ class UserUpdate(BaseModel):
     last_name: Optional[str] = Field(None, min_length=1, max_length=100)
     role: Optional[UserRole] = None
     active: Optional[bool] = None
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "first_name": "Juan Carlos",
+                    "role": "admin",
+                    "active": False,
+                }
+            ]
+        }
+    }
 
     @field_validator("username")
     @classmethod
@@ -43,7 +70,24 @@ class UserResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "username": "juan_perez",
+                    "email": "juan.perez@example.com",
+                    "first_name": "Juan",
+                    "last_name": "Perez",
+                    "role": "user",
+                    "active": True,
+                    "created_at": "2026-05-22T10:00:00Z",
+                    "updated_at": "2026-05-22T10:00:00Z",
+                }
+            ]
+        },
+    }
 
 
 class UserListResponse(BaseModel):

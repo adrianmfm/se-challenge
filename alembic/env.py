@@ -4,7 +4,7 @@ from alembic import context
 
 from app.core.config import settings
 from app.core.database import Base
-from app.models import user  # noqa: F401 — registers models for autogenerate
+from app.models import user 
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
