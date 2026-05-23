@@ -17,7 +17,7 @@ COPY alembic.ini .
 COPY app/ app/
 COPY tests/ tests/
 COPY pytest.ini .
+COPY start.sh .
+RUN chmod +x start.sh
 
-# Run migrations then start the server
-CMD alembic upgrade head && \
-    uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}
+CMD ["./start.sh"]
