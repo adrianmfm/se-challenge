@@ -4,7 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.database import Base, get_db
+from app.core.limiter import limiter
 from app.main import app
+
+# Disable rate limiting during tests so requests are never throttled
+limiter.enabled = False
 
 TEST_DATABASE_URL = "sqlite:///./test.db"
 
